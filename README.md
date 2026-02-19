@@ -1,4 +1,4 @@
-🫁 Lung Cancer Detection & Malignancy Prediction using Multi-Task 3D Deep Learning
+##🫁 Lung Cancer Detection & Malignancy Prediction using Multi-Task 3D Deep Learning
 🚀 Research-Grade CAD System using LIDC-IDRI CT Scans
 
 This project presents a modular, research-grade Computer-Aided Diagnosis (CAD) system for automatic lung nodule detection and malignancy prediction using 3D deep learning on thoracic CT scans.
