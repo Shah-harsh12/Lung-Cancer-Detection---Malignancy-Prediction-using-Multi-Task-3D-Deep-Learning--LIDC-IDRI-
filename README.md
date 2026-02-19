@@ -1,178 +1,131 @@
-🫁 Lung Cancer Detection & Malignancy Prediction using Multi-Task 3D Deep Learning
-🚀 Research-Grade CAD System using LIDC-IDRI CT Scans
+# 🫁 Lung Cancer Detection & Malignancy Prediction using Multi-Task 3D Deep Learning
 
-This project presents a modular, research-grade Computer-Aided Diagnosis (CAD) system for automatic lung nodule detection and malignancy prediction using 3D deep learning on thoracic CT scans.
+A research-grade Computer-Aided Diagnosis (CAD) framework for automatic lung nodule detection and malignancy prediction using thoracic CT scans from the LIDC-IDRI dataset.
 
-The system is built using the LIDC-IDRI dataset and implements a complete end-to-end pipeline from DICOM preprocessing to multi-task neural network training and evaluation.
+This project implements a modular deep learning pipeline including DICOM preprocessing, lung segmentation, 3D cube extraction, isotropic resampling, HU normalization, patient-level data splitting, and a multi-task 3D CNN architecture.
 
-📌 Key Features
+---
 
-3D CT DICOM preprocessing pipeline
+# 📌 Project Highlights
 
-Lung segmentation & HU normalization
+- ✅ 3D Multi-Task Deep Learning Model  
+- ✅ Nodule Detection (Binary Classification)  
+- ✅ Malignancy Score Prediction (Regression)  
+- ✅ Patient-Level Train/Validation Split  
+- ✅ Modular & Reproducible Pipeline  
+- ✅ Mixed Precision GPU Training  
+- ✅ Research-Oriented Code Structure  
 
-Physically consistent cube extraction (64×64×64)
+---
 
-Patient-level train/validation split (no data leakage)
+# 📊 Dataset
 
-Multi-task 3D CNN architecture
+This project uses the **LIDC-IDRI (Lung Image Database Consortium and Image Database Resource Initiative)** dataset.
 
-Joint detection + malignancy prediction
+## Dataset Details
 
-Mixed precision GPU training (AMP)
+- 1018 thoracic CT scans  
+- 4 radiologist annotations per scan  
+- Malignancy rating scale: 1–5  
+- DICOM format  
+- Public research dataset  
 
-Modular research-ready structure
+> ⚠ Raw CT data is not included in this repository due to size constraints.
 
-Clean evaluation metrics (AUC, MAE, Correlation)
+---
 
-📊 Dataset
+# 🏗️ Pipeline Overview
 
-LIDC-IDRI (Lung Image Database Consortium Image Collection)
-
-1018 thoracic CT scans
-
-4 radiologist annotations per scan
-
-Nodule malignancy ratings (1–5 scale)
-
-DICOM format
-
-Public research dataset
-
-🏗️ Project Architecture
 DICOM CT Scan
-   ↓
+↓
 Lung Segmentation
-   ↓
-Cube Extraction (64³)
-   ↓
+↓
+3D Cube Extraction (64×64×64)
+↓
 Resampling to 1mm³
-   ↓
+↓
 HU Normalization
-   ↓
+↓
 Dataset Builder
-   ↓
+↓
 3D CNN Backbone
-   ↓
- ┌───────────────┬───────────────┐
- │ Detection Head │ Malignancy Head │
- └───────────────┴───────────────┘
+↓
+├── Detection Head (Binary Classification)
+└── Malignancy Head (Regression)
 
-🧠 Model Architecture
-🔹 Backbone
 
-3D Residual CNN
+---
 
-Global Average Pooling
+# 🧠 Model Architecture
 
-256-dim feature representation
+### Input
+`(1 × 64 × 64 × 64)` CT cube
 
-🔹 Detection Head
+### Backbone
+3D Residual Convolutional Network
 
-Binary classification
+### Heads
+- Detection Head → Binary classification (Nodule vs Background)  
+- Malignancy Head → Continuous malignancy score prediction  
 
-BCEWithLogitsLoss
+### Multi-Task Loss
 
-🔹 Malignancy Head
+\[
+L = \lambda_{det} L_{BCE} + \lambda_{mal} L_{SmoothL1}
+\]
 
-Regression output
+---
 
-SmoothL1Loss
+# 📈 Validation Results
 
-🔹 Multi-Task Loss
-𝐿
-=
-𝜆
-𝑑
-𝑒
-𝑡
-𝐿
-𝐵
-𝐶
-𝐸
-+
-𝜆
-𝑚
-𝑎
-𝑙
-𝐿
-𝑆
-𝑚
-𝑜
-𝑜
-𝑡
-ℎ
-𝐿
-1
-L=λ
-det
-	​
+## 🫁 Detection Performance
 
-L
-BCE
-	​
-
-+λ
-mal
-	​
-
-L
-SmoothL1
-	​
-
-⚙️ Training Configuration
-
-PyTorch 2.x
-
-CUDA acceleration
-
-Mixed Precision (AMP)
-
-AdamW Optimizer
-
-CosineAnnealingLR Scheduler
-
-Gradient Clipping
-
-Batch size: 12
-
-Epochs: 30
-
-Hardware: NVIDIA RTX A4000 (16GB)
-
-📈 Validation Results
-🔎 Detection Performance
-
-ROC-AUC: 0.906
-
-Accuracy: 0.859
-
-Precision: 0.777
-
-Recall: 0.979
-
-F1-score: 0.867
+| Metric | Value |
+|--------|--------|
+| ROC-AUC | **0.906** |
+| Accuracy | 0.859 |
+| Precision | 0.777 |
+| Recall | 0.979 |
+| F1 Score | 0.867 |
 
 Confusion Matrix:
-
 [[462 150]
- [ 11 524]]
+[ 11 524]]
 
+High recall is prioritized for medical safety.
 
-High recall ensures minimal missed nodules (low false negatives).
+---
 
-📉 Malignancy Regression Performance
+## 🧬 Malignancy Regression Performance
 
-MAE: 0.72
-
-RMSE: 1.11
-
-Pearson Correlation: 0.686
+| Metric | Value |
+|--------|--------|
+| MAE | 0.72 |
+| RMSE | 1.11 |
+| Pearson Correlation | 0.686 |
 
 Average prediction error is less than one radiologist rating level.
 
-🗂️ Project Structure
+---
+
+# 🛠️ Tech Stack
+
+- Python 3.10  
+- PyTorch (CUDA-enabled)  
+- NVIDIA RTX A4000 (16GB VRAM)  
+- Mixed Precision (AMP)  
+- AdamW Optimizer  
+- Cosine Annealing Scheduler  
+- Scikit-learn  
+- Matplotlib  
+
+---
+
+# 📂 Project Structure
+
 configs/
+data/
+processed_data/
 preprocessing/
 datasets/
 models/
@@ -181,58 +134,56 @@ evaluation/
 explainability/
 utils/
 notebooks/
-train.py
+weights/
+logs/
 
 
-Raw CT data, processed datasets, logs, and model weights are excluded via .gitignore.
+---
 
-🚀 How to Run
-1️⃣ Install Requirements
+# 🚀 How to Run
+
+## 1️⃣ Install Dependencies
+
+```bash
 pip install torch torchvision torchaudio
 pip install numpy scipy scikit-learn matplotlib tqdm pylidc
 
-2️⃣ Build Dataset
-from preprocessing.dataset_builder import build_dataset
-build_dataset()
+## Build Dataset (Stage 1)
+python preprocessing/dataset_builder.py
 
-3️⃣ Train Model
-from training.train_dual_head import train
-train()
+## Train Multi-Task Model
+python training/train_dual_head.py
 
-4️⃣ Evaluate Model
-from evaluation.metrics import evaluate_model
+## Evaluate Model
+python evaluation/metrics.py
+```
+project_metadata:
+  title: "Lung Cancer Detection & Malignancy Prediction using Multi-Task 3D Deep Learning"
+  domain: "Medical Imaging AI"
+  dataset: "LIDC-IDRI"
+  author:
+    name: "Harsh Shah"
+    specialization: "Medical Imaging & AI Research"
+    year: 2026
 
-🔬 Research Contributions
+research_motivation:
+  objective:
+    - Detect pulmonary nodules automatically
+    - Predict malignancy likelihood
+    - Assist radiologists in decision-making
 
-Correct voxel-to-physical space handling
+validation_results:
+  detection:
+    roc_auc: 0.906
+    accuracy: 0.859
+    recall: 0.979
+  malignancy_regression:
+    mae: 0.72
+    pearson_correlation: 0.686
 
-Stable multi-task 3D CNN
-
-Clean patient-level split (no leakage)
-
-Reproducible modular pipeline
-
-Strong baseline (>0.90 AUC)
-
-🔮 Future Work
-
-External validation (LUNA16)
-
-Focal loss for detection
-
-Malignancy loss on positive samples only
-
-Full CT scan detection (sliding window)
-
-3D Grad-CAM explainability
-
-Self-supervised pretraining (JEPA)
-
-👨‍💻 Author
-
-Harsh Shah
-AI/ML Researcher – Medical Imaging
-
-📜 License
-
-This project is for research and educational purposes.
+hardware_environment:
+  gpu: "NVIDIA RTX A4000 (16GB VRAM)"
+  optimizer: "AdamW"
+  scheduler: "CosineAnnealingLR"
+  precision: "Mixed Precision (AMP)"
+  epochs: 30
